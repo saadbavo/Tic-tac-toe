@@ -12,3 +12,7 @@ const Gamboard = ( ()=> {
     }
     const getBoard = () => board;
 })();
+
+const player = (name, mark) => {
+    return { name, mark };
+}
