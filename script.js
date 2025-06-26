@@ -48,9 +48,6 @@ const game = (() => {
     let nextPlayer = player("Player 2", "O");
     let winner = null;
 
-    const switchPlayers = () => {
-        [currentPlayer, nextPlayer] = [nextPlayer, currentPlayer];
-    };
 
     const makeMove = (index) => {
         try {
@@ -63,6 +60,10 @@ const game = (() => {
             console.error(error.message);
         }
     };
+        const switchPlayers = () => {
+        [currentPlayer, nextPlayer] = [nextPlayer, currentPlayer];
+    };
+
 
     const resetGame = () => {
         Gamboard.resetBoard();
@@ -94,8 +95,9 @@ const updateStatusDisplay = () => {
 cells.forEach((cell, index) => {
     cell.addEventListener("click", () => {
         if (!cell.textContent && !game.getWinner()) {
+            const current = game.getCurrentPlayer();
             game.makeMove(index);
-            cell.textContent = game.getCurrentPlayer().mark;
+            cell.textContent = current.mark;
             updateStatusDisplay();
         }
     });
