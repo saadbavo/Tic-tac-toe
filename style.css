@@ -1,0 +1,42 @@
+.cell{
+    width: 75px;
+    height: 75px;
+    border: 2px solid black;
+    font-size: 50px;
+    text-align: center;
+    cursor: pointer;
+}
+.cell:hover {
+    background-color: lightgray;
+}
+#board {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 5px;
+    width: 250px;
+    margin: auto;
+}
+.gameContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-family: "permanent marker", cursive, sans-serif;
+}
+#status {
+    margin-top: 20px;
+    font-size: 24px;
+}
+#resetButton {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    background-color: #101530;
+    color: white;
+}
+#resetButton:hover {
+    background-color: #303060;
+}
