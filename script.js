@@ -1,3 +1,8 @@
+const cells = document.querySelectorAll(".cell");
+const resetButton = document.getElementById("resetButton");
+const statusDisplay = document.getElementById("status");
+
+
 const Gamboard = ( ()=> {
     let board =["", "", "", "", "", "", "", "", ""];
     
@@ -6,7 +11,7 @@ const Gamboard = ( ()=> {
     };
     const placeMarker = (index, player) => {
         if (index < 0 || index >= board.length || board[index] !== "") {
-            throw new Error("Invalid move");
+            return "Invalid move";
         }
         board[index] = player.mark;
     }
@@ -28,10 +33,10 @@ const checkWinner = (board) => {
     for (const combination of winningCombinations) {
         const [a, b, c] = combination;
         if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-            return console.log(board[a]) ; // Return the mark of the winner
+            return board[a]; // Return the mark of the winner
         }
         else if (board.every(cell => cell !== "")) {
-        return console.log("draw"); // Return "draw" if all cells are filled and no winner
+        return "draw"; // Return "draw" if all cells are filled and no winner
     }
     }
     return null; // No winner yet
@@ -69,3 +74,36 @@ const game = (() => {
     return { makeMove, resetGame, getCurrentPlayer: () => currentPlayer, getWinner: () => winner };
 })();
 
+const updateStatusDisplay = () => {
+    const winner = game.getWinner();
+    const mark = Gamboard.placeMarker;
+    if (mark === "Invalid move") {
+        statusDisplay.textContent = "Invalid move, try again!";
+        return;
+    }
+    if (winner) {
+        if (winner === "draw") {
+            statusDisplay.textContent = "It's a draw!";
+        } else {
+            statusDisplay.textContent = `${winner} wins!`;
+        }
+    } else {
+        statusDisplay.textContent = `${game.getCurrentPlayer().name}'s turn (${game.getCurrentPlayer().mark})`;
+    }
+}
+cells.forEach((cell, index) => {
+    cell.addEventListener("click", () => {
+        if (!cell.textContent && !game.getWinner()) {
+            game.makeMove(index);
+            cell.textContent = game.getCurrentPlayer().mark;
+            updateStatusDisplay();
+        }
+    });
+});
+
+resetButton.addEventListener("click", () => {
+    game.resetGame();
+    Gamboard.resetBoard();
+    cells.forEach(cell => cell.textContent = "");
+    updateStatusDisplay();
+});
