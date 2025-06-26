@@ -28,13 +28,44 @@ const checkWinner = (board) => {
     for (const combination of winningCombinations) {
         const [a, b, c] = combination;
         if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-            return board[a]; // Return the mark of the winner
+            return console.log(board[a]) ; // Return the mark of the winner
         }
         else if (board.every(cell => cell !== "")) {
-        return "draw"; // Return "draw" if all cells are filled and no winner
+        return console.log("draw"); // Return "draw" if all cells are filled and no winner
     }
     }
     return null; // No winner yet
     
 }
+
+const game = (() => {
+    let currentPlayer = player("Player 1", "X");
+    let nextPlayer = player("Player 2", "O");
+    let winner = null;
+
+    const switchPlayers = () => {
+        [currentPlayer, nextPlayer] = [nextPlayer, currentPlayer];
+    };
+
+    const makeMove = (index) => {
+        try {
+            Gamboard.placeMarker(index, currentPlayer);
+            winner = checkWinner(Gamboard.getBoard());
+            if (!winner) {
+                switchPlayers();
+            }
+        } catch (error) {
+            console.error(error.message);
+        }
+    };
+
+    const resetGame = () => {
+        Gamboard.resetBoard();
+        currentPlayer = player("Player 1", "X");
+        nextPlayer = player("Player 2", "O");
+        winner = null;
+    };
+
+    return { makeMove, resetGame, getCurrentPlayer: () => currentPlayer, getWinner: () => winner };
+})();
 
